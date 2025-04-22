@@ -9,6 +9,15 @@ import remarkGfm from 'remark-gfm';
 // Define paths
 const contentDirectory = path.join(process.cwd(), 'src/content');
 
+// Define type for frontmatter
+interface Frontmatter {
+  slug: string;
+  title: string;
+  description: string;
+  date?: string;
+  [key: string]: any; // For any other properties in frontmatter
+}
+
 // Get all files in a directory
 export function getFiles(directory: string) {
   const dirPath = path.join(contentDirectory, directory);
@@ -43,36 +52,32 @@ export async function getMDXBySlug(directory: string, slug: string) {
     return {
       content: mdxSource,
       frontmatter: {
-        slug,
         ...data,
-      },
+        slug,
+      } as Frontmatter,
     };
   } catch (error) {
     console.error(`Error reading MDX file ${filePath}:`, error);
     return {
       content: null,
       frontmatter: {
-        slug,
         title: 'Content Not Found',
         description: 'The requested content could not be loaded.',
-      },
+        slug,
+      } as Frontmatter,
     };
   }
 }
 
 // Get all posts/cheatsheets with frontmatter
-export async function getAllContent(directory: string) {
+export async function getAllContent(directory: string): Promise<Frontmatter[]> {
   const files = getFiles(directory);
   
   const content = await Promise.all(
     files.map(async (file) => {
       const slug = file.replace(/\.mdx$/, '');
       const { frontmatter } = await getMDXBySlug(directory, slug);
-      
-      return {
-        slug,
-        ...frontmatter,
-      };
+      return frontmatter;
     })
   );
   
