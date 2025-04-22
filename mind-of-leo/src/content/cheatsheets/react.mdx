@@ -1,0 +1,260 @@
+---
+title: 'React.js Cheatsheet'
+description: 'Essential hooks, patterns, and best practices for React development'
+icon: 'react-icon.svg'
+---
+
+# React.js Cheatsheet
+
+## Hooks Essentials
+
+### useState
+
+```jsx
+// Basic state
+const [count, setCount] = useState(0);
+
+// Update based on previous state
+setCount(prevCount => prevCount + 1);
+
+// Object state
+const [user, setUser] = useState({ name: '', email: '' });
+
+// Update object state (always create a new object)
+setUser(prevUser => ({ ...prevUser, name: 'John' }));
+```
+
+### useEffect
+
+```jsx
+// Runs on every render
+useEffect(() => {
+  console.log('Component rendered');
+});
+
+// Runs only on mount
+useEffect(() => {
+  console.log('Component mounted');
+}, []);
+
+// Runs when dependencies change
+useEffect(() => {
+  console.log(`Count changed: ${count}`);
+}, [count]);
+
+// Cleanup function
+useEffect(() => {
+  const subscription = subscribeToData();
+  return () => {
+    subscription.unsubscribe();
+  };
+}, []);
+```
+
+### useContext
+
+```jsx
+// Create a context
+const ThemeContext = createContext('light');
+
+// Provider in parent component
+<ThemeContext.Provider value="dark">
+  <ChildComponent />
+</ThemeContext.Provider>
+
+// Consumer in child component
+const theme = useContext(ThemeContext);
+```
+
+### useRef
+
+```jsx
+// Create a ref
+const inputRef = useRef(null);
+
+// Access the DOM element
+const focusInput = () => {
+  inputRef.current.focus();
+};
+
+// Render
+<input ref={inputRef} />
+<button onClick={focusInput}>Focus</button>
+
+// Persist values between renders without causing re-renders
+const prevCountRef = useRef();
+useEffect(() => {
+  prevCountRef.current = count;
+}, [count]);
+```
+
+### useMemo
+
+```jsx
+// Memoize expensive calculations
+const memoizedValue = useMemo(() => {
+  return computeExpensiveValue(a, b);
+}, [a, b]);
+```
+
+### useCallback
+
+```jsx
+// Memoize callbacks for child components using React.memo
+const memoizedCallback = useCallback(() => {
+  doSomething(a, b);
+}, [a, b]);
+```
+
+## Component Patterns
+
+### Conditional Rendering
+
+```jsx
+// Using ternary operator
+{isLoggedIn ? <UserDashboard /> : <LoginForm />}
+
+// Using logical AND
+{isAdmin && <AdminPanel />}
+
+// Using early return
+if (isLoading) return <LoadingSpinner />;
+```
+
+### Render Props
+
+```jsx
+// Component with render prop
+function MouseTracker({ render }) {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setPosition({ x: event.clientX, y: event.clientY });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+  
+  return render(position);
+}
+
+// Usage
+<MouseTracker
+  render={({ x, y }) => (
+    <div>Mouse position: {x}, {y}</div>
+  )}
+/>
+```
+
+### Compound Components
+
+```jsx
+// Tab component example
+function Tabs({ children, defaultIndex = 0 }) {
+  const [activeIndex, setActiveIndex] = useState(defaultIndex);
+  
+  return (
+    <TabsContext.Provider value={{ activeIndex, setActiveIndex }}>
+      {children}
+    </TabsContext.Provider>
+  );
+}
+
+Tabs.TabList = function TabList({ children }) {
+  return <div className="tab-list">{children}</div>;
+};
+
+Tabs.Tab = function Tab({ index, children }) {
+  const { activeIndex, setActiveIndex } = useContext(TabsContext);
+  
+  return (
+    <button
+      className={activeIndex === index ? 'active' : ''}
+      onClick={() => setActiveIndex(index)}
+    >
+      {children}
+    </button>
+  );
+};
+
+Tabs.TabPanels = function TabPanels({ children }) {
+  return <div className="tab-panels">{children}</div>;
+};
+
+Tabs.TabPanel = function TabPanel({ index, children }) {
+  const { activeIndex } = useContext(TabsContext);
+  
+  return activeIndex === index ? (
+    <div className="tab-panel">{children}</div>
+  ) : null;
+};
+
+// Usage
+<Tabs>
+  <Tabs.TabList>
+    <Tabs.Tab index={0}>Tab 1</Tabs.Tab>
+    <Tabs.Tab index={1}>Tab 2</Tabs.Tab>
+  </Tabs.TabList>
+  <Tabs.TabPanels>
+    <Tabs.TabPanel index={0}>Content 1</Tabs.TabPanel>
+    <Tabs.TabPanel index={1}>Content 2</Tabs.TabPanel>
+  </Tabs.TabPanels>
+</Tabs>
+```
+
+## Performance Optimization
+
+### React.memo
+
+```jsx
+// Prevent unnecessary re-renders
+const MemoizedComponent = React.memo(function MyComponent(props) {
+  // Only re-renders if props change
+  return <div>{props.name}</div>;
+});
+
+// Custom comparison function
+const areEqual = (prevProps, nextProps) => {
+  return prevProps.id === nextProps.id;
+};
+
+const MemoizedWithCustomComparison = React.memo(MyComponent, areEqual);
+```
+
+### useReducer for Complex State
+
+```jsx
+// Define reducer
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    default:
+      throw new Error();
+  }
+}
+
+// Use reducer
+const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+// Dispatch actions
+<button onClick={() => dispatch({ type: 'increment' })}>+</button>
+<button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+```
+
+## Best Practices
+
+1. **Keep components small and focused** - Follow the single responsibility principle
+2. **Lift state up** - Place shared state in the closest common ancestor
+3. **Use function components with hooks** - They're more concise and easier to test
+4. **Destructure props** - Makes component code cleaner and more readable
+5. **Use prop types or TypeScript** - Add type checking to catch bugs early
+6. **Use keys for lists properly** - Always use stable, unique IDs, not array indices
+7. **Avoid direct DOM manipulation** - Use refs when you must access the DOM
+8. **Create custom hooks** - Extract reusable logic into custom hooks
