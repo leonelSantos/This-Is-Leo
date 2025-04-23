@@ -7,7 +7,11 @@ import Footer from '@/components/Footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'YourName.dev - Tech, Economy, and More',
+  icons: {
+    icon: '/images/LAS-Pixelated.png',
+    shortcut: '/images/LAS-Pixelated.png',
+  },
+  title: 'LAS',
   description: 'A personal blog featuring tech cheat sheets, opinions on economy, software, science, and recommendations for music and books.',
 };
 

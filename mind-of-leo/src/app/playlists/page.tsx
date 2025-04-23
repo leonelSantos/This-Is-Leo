@@ -17,31 +17,46 @@ type Playlist = {
 const playlists: Playlist[] = [
   {
     id: '1',
-    title: 'Coding Focus',
-    description: 'Instrumental and electronic tracks that help me concentrate while coding.',
-    mood: 'Focused',
-    spotifyId: '37i9dQZF1DX5trt9i14X7j',
+    title: 'Hell Bent',
+    description: 'Cowboy Shit',
+    mood: 'Got \'em ol\' travelling blues',
+    spotifyId: '6YgbHmQJzXsOHY9KYhoIV2',
+    //<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6YgbHmQJzXsOHY9KYhoIV2?utm_source=generator" 
+    // width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; 
+    // fullscreen; 
+    // picture-in-picture" 
+    // loading="lazy"></iframe>
   },
   {
     id: '2',
-    title: 'Morning Coffee',
-    description: 'Calm and uplifting tunes to start the day on a positive note.',
-    mood: 'Relaxed',
-    spotifyId: '37i9dQZF1DXcgZcN2HVMoe',
+    title: 'Easy Come, Easy Go',
+    description: 'Cowboy Shit II',
+    mood: 'Got \'em ol\' travelling blues',
+    spotifyId: '61EMKwEGqA3xyF4TCV6aUv',
+    //<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/61EMKwEGqA3xyF4TCV6aUv?utm_source=generator" 
+    // width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; 
+    // picture-in-picture" loading="lazy"></iframe>
   },
   {
     id: '3',
-    title: 'Workout Energy',
-    description: 'High-energy beats to keep me motivated during workouts.',
-    mood: 'Energetic',
-    spotifyId: '37i9dQZF1DX76Wlfdnj7AP',
+    title: 'Every Dog Has It\'s Day',
+    description: 'Cowboy Shit III',
+    mood: 'Got \'em ol\' travelling blues',
+    spotifyId: '35r5XbMk4otx7QhUpEn1nw',
+    //<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/35r5XbMk4otx7QhUpEn1nw?utm_source=generator" 
+    // width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; 
+    // fullscreen; picture-in-picture" loading="lazy"></iframe>
+
   },
   {
     id: '4',
-    title: 'Evening Wind Down',
-    description: 'Soothing tracks for relaxing and unwinding in the evening.',
-    mood: 'Calm',
-    spotifyId: '37i9dQZF1DWZ5Se2LB1C5h',
+    title: 'Other Side of Nowhere',
+    description: 'Cowboy Shit IV',
+    mood: 'Got \'em ol\' travelling blues',
+    spotifyId: '6sfcz0bqE6GoBGxH0rTeSh',
+    //<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6sfcz0bqE6GoBGxH0rTeSh?utm_source=generator" 
+    // width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; 
+    // fullscreen; picture-in-picture" loading="lazy"></iframe>
   },
 ];
 

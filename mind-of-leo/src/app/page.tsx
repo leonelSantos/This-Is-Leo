@@ -43,17 +43,16 @@ export default function Home() {
       <section className="mb-16 text-center">
         <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full mb-4">
           <Image
-            src="/images/profile.jpg"
+            src="/images/LAS-Pixelated.png"
             alt="Profile Picture"
             fill
             className="object-cover"
             priority
           />
         </div>
-        <h1 className="text-4xl font-bold mb-4">My Tech & Ideas Blog</h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Welcome to my personal space where I share technical cheat sheets, thoughts on technology, 
-          economy, science, and my favorite music and books.
+        <h1 className="text-4xl font-bold mb-4">Observations From a Wandering Mind</h1>
+        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          He who jumps into the void owes no explanation <br/>to those who stand and watch.
         </p>
       </section>
 
@@ -61,7 +60,7 @@ export default function Home() {
       <section className="mb-16">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Latest Posts</h2>
-          <Link href="/blog" className="text-blue-600 hover:underline">
+          <Link href="/blog" className="text-cyan-200 hover:underline">
             View all posts →
           </Link>
         </div>
@@ -76,7 +75,7 @@ export default function Home() {
       <section className="mb-16">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Tech Cheatsheets</h2>
-          <Link href="/cheatsheets" className="text-blue-600 hover:underline">
+          <Link href="/cheatsheets" className="text-cyan-200 hover:underline">
             View all cheatsheets →
           </Link>
         </div>
@@ -90,15 +89,15 @@ export default function Home() {
       {/* Quick Links */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-purple-50 p-6 rounded-lg">
-          <h2 className="text-xl font-bold mb-4">My Spotify Playlists</h2>
-          <p className="mb-4">Check out my curated music collections for different moods and activities.</p>
+          <h2 className="text-xl text-gray-800 font-bold mb-4">My Spotify Playlists</h2>
+          <p className=" text-gray-800 mb-4">Check out my curated music collections for different moods and activities.</p>
           <Link href="/playlists" className="inline-block bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
             Explore playlists
           </Link>
         </div>
         <div className="bg-amber-50 p-6 rounded-lg">
-          <h2 className="text-xl font-bold mb-4">Book Recommendations</h2>
-          <p className="mb-4">Discover books that have influenced my thinking and expanded my horizons.</p>
+          <h2 className="text-amber-600 text-xl font-bold mb-4">Book Recommendations</h2>
+          <p className=" text-amber-500 mb-4">Discover books that have influenced my thinking and expanded my horizons.</p>
           <Link href="/books" className="inline-block bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700">
             See recommendations
           </Link>

@@ -9,11 +9,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
             <Link href="/" className="font-bold text-xl mb-4 block">
-              YourName.dev
+              LAS.dev
             </Link>
             <p className="text-gray-400 mb-6 max-w-md">
-              A personal blog sharing tech cheat sheets, thoughts on economy and software,
-              and recommendations for music and books.
+              A look into my mind.
             </p>
             <div className="flex space-x-4">
               <a 
@@ -28,7 +27,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a 
-                href="https://github.com/yourusername" 
+                href="https://github.com/leonelSantos" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
@@ -39,7 +38,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a 
-                href="https://linkedin.com/in/yourusername" 
+                href="https://linkedin.com/in/leonel-a-santos" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
@@ -88,7 +87,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li className="text-gray-400">
                 <a href="mailto:yourname@example.com" className="hover:text-white transition-colors">
-                  yourname@example.com
+                  leonel.adan.santos@gmail.com
                 </a>
               </li>
               <li>
@@ -101,7 +100,7 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>© {currentYear} YourName.dev. All rights reserved.</p>
+          <p>© {currentYear} LAS. All rights reserved.</p>
         </div>
       </div>
     </footer>
