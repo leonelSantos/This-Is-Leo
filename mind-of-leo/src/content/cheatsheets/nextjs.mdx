@@ -1,0 +1,591 @@
+---
+title: 'Next.js Cheatsheet'
+description: 'App Router, Server Components, and essential patterns for Next.js development'
+icon: 'nextjs-icon.svg'
+---
+
+# Next.js Cheatsheet
+
+## App Router Basics
+
+### File-System Based Routing
+
+```jsx
+// File structure determines routes
+app/                  // Root route (/)
+├── page.tsx          // UI for root route
+├── layout.tsx        // Shared UI for this segment and its children
+├── about/            // About route (/about)
+│   └── page.tsx      // UI for /about
+├── blog/             // Blog route (/blog)
+│   ├── page.tsx      // UI for /blog
+│   └── [slug]/       // Dynamic segment
+│       └── page.tsx  // UI for /blog/:slug
+```
+
+### Special Files
+
+- `page.tsx` - Defines a route segment with UI
+- `layout.tsx` - Shared UI for a segment and its children
+- `loading.tsx` - Loading UI for a segment
+- `error.tsx` - Error UI for a segment
+- `not-found.tsx` - UI for 404 errors
+- `route.ts` - API endpoint (replaces pages/api)
+
+### Dynamic Routes
+
+```jsx
+// app/blog/[slug]/page.tsx
+export default function BlogPost({ params }) {
+  // params.slug contains the dynamic value
+  return <h1>Blog Post: {params.slug}</h1>;
+}
+
+// Generate static params for build time
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+```
+
+### Catch-all Routes
+
+```jsx
+// app/docs/[...slug]/page.tsx
+export default function Docs({ params }) {
+  // params.slug is an array of path segments
+  // e.g., /docs/getting-started/installation
+  // params.slug would be ['getting-started', 'installation']
+  return <div>Documentation: {params.slug.join('/')}</div>;
+}
+```
+
+## Server and Client Components
+
+### Server Components (Default)
+
+```jsx
+// This is a Server Component by default
+export default function Page() {
+  // This code runs on the server only
+  return <h1>Hello, Server Component!</h1>;
+}
+```
+
+### Client Components
+
+```jsx
+'use client'; // This directive marks this as a Client Component
+
+import { useState } from 'react';
+
+export default function Counter() {
+  // This code runs on the client
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+
+### Component Composition Pattern
+
+```jsx
+// ServerComponent.jsx
+export default function ServerComponent({ data }) {
+  return <div>{data}</div>;
+}
+
+// ClientComponent.jsx
+'use client';
+import { useState } from 'react';
+
+export default function ClientComponent({ children }) {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  return (
+    <div>
+      <button onClick={() => setIsOpen(!isOpen)}>Toggle</button>
+      {isOpen && children}
+    </div>
+  );
+}
+
+// Page.jsx - Server Component
+import ClientComponent from './ClientComponent';
+import ServerComponent from './ServerComponent';
+
+export default async function Page() {
+  const data = await fetchData(); // Server-side fetch
+  
+  return (
+    <ClientComponent>
+      <ServerComponent data={data} />
+    </ClientComponent>
+  );
+}
+```
+
+## Data Fetching
+
+### Server Component Data Fetching
+
+```jsx
+// Fetch data directly in Server Components
+export default async function Page() {
+  // This fetch is automatically deduped and cached
+  const data = await fetch('https://api.example.com/data');
+  const jsonData = await data.json();
+  
+  return <div>{jsonData.title}</div>;
+}
+```
+
+### Data Fetching Options
+
+```jsx
+// With cache options - default behavior
+const response = await fetch('https://api.example.com/data');
+
+// No caching
+const response = await fetch('https://api.example.com/data', {
+  cache: 'no-store'
+});
+
+// Revalidate at specific intervals (in seconds)
+const response = await fetch('https://api.example.com/data', {
+  next: { revalidate: 60 } // Revalidate every 60 seconds
+});
+```
+
+### Route Handlers (API Routes)
+
+```jsx
+// app/api/user/route.ts
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  const users = await getUsers();
+  return NextResponse.json(users);
+}
+
+export async function POST(request) {
+  const data = await request.json();
+  const newUser = await createUser(data);
+  return NextResponse.json(newUser, { status: 201 });
+}
+```
+
+## Metadata and SEO
+
+### Static Metadata
+
+```jsx
+// app/layout.tsx or app/page.tsx
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Website',
+  description: 'Welcome to my website',
+  openGraph: {
+    title: 'My Website',
+    description: 'Welcome to my website',
+    images: ['/og-image.jpg'],
+  },
+};
+
+export default function Layout({ children }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+### Dynamic Metadata
+
+```jsx
+// app/blog/[slug]/page.tsx
+import { Metadata } from 'next';
+
+// Generate metadata based on params
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = await getPost(params.slug);
+  
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      images: [post.image],
+    },
+  };
+}
+
+export default function BlogPost({ params }) {
+  // ...
+}
+```
+
+## Navigation
+
+### Link Component
+
+```jsx
+import Link from 'next/link';
+
+export default function Navigation() {
+  return (
+    <nav>
+      <Link href="/">Home</Link>
+      <Link href="/about">About</Link>
+      <Link 
+        href={{
+          pathname: '/blog/[slug]',
+          query: { slug: 'hello-world' },
+        }}
+      >
+        Blog Post
+      </Link>
+    </nav>
+  );
+}
+```
+
+### Programmatic Navigation
+
+```jsx
+'use client';
+
+import { useRouter } from 'next/navigation';
+
+export default function LoginForm() {
+  const router = useRouter();
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Process login...
+    router.push('/dashboard');
+  };
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* Form fields */}
+      <button type="submit">Login</button>
+    </form>
+  );
+}
+```
+
+## Image Optimization
+
+```jsx
+import Image from 'next/image';
+
+export default function ProfilePage() {
+  return (
+    <div>
+      {/* Fixed size image */}
+      <Image
+        src="/profile.jpg"
+        alt="Profile picture"
+        width={500}
+        height={300}
+        priority // Load with higher priority
+      />
+      
+      {/* Responsive image */}
+      <div className="relative h-64 w-full">
+        <Image
+          src="/hero.jpg"
+          alt="Hero image"
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+      </div>
+      
+      {/* Remote image */}
+      <Image
+        src="https://example.com/photo.jpg"
+        alt="Remote photo"
+        width={500}
+        height={300}
+      />
+    </div>
+  );
+}
+```
+
+## Authentication
+
+### Using NextAuth.js
+
+```jsx
+// app/api/auth/[...nextauth]/route.ts
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+
+const handler = NextAuth({
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+  ],
+  callbacks: {
+    async session({ session, token }) {
+      // Add user ID to the session
+      session.user.id = token.sub;
+      return session;
+    },
+  },
+});
+
+export { handler as GET, handler as POST };
+```
+
+### Protecting Routes
+
+```jsx
+// middleware.ts
+import { NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
+
+export async function middleware(request) {
+  const token = await getToken({ req: request });
+  
+  if (!token) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+  
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/dashboard/:path*', '/profile/:path*'],
+};
+```
+
+## Server Actions (Form Handling)
+
+```jsx
+// app/actions.ts
+'use server';
+
+export async function createPost(formData: FormData) {
+  const title = formData.get('title');
+  const content = formData.get('content');
+  
+  // Server-side validation
+  if (!title || !content) {
+    return { error: 'All fields are required' };
+  }
+  
+  // Create post in database
+  try {
+    await db.post.create({ data: { title, content } });
+    return { success: true };
+  } catch (error) {
+    return { error: 'Failed to create post' };
+  }
+}
+
+// app/blog/new/page.tsx
+'use client';
+
+import { createPost } from '@/app/actions';
+import { useFormState } from 'react-dom';
+
+export default function NewPostPage() {
+  const [state, formAction] = useFormState(createPost, {});
+  
+  return (
+    <form action={formAction}>
+      {state.error && <p className="text-red-500">{state.error}</p>}
+      {state.success && <p className="text-green-500">Post created!</p>}
+      
+      <div>
+        <label htmlFor="title">Title</label>
+        <input id="title" name="title" type="text" required />
+      </div>
+      
+      <div>
+        <label htmlFor="content">Content</label>
+        <textarea id="content" name="content" required />
+      </div>
+      
+      <button type="submit">Create Post</button>
+    </form>
+  );
+}
+```
+
+## Error Handling
+
+```jsx
+// app/dashboard/error.tsx
+'use client';
+
+import { useEffect } from 'react';
+
+interface ErrorProps {
+  error: Error;
+  reset: () => void;
+}
+
+export default function Error({ error, reset }: ErrorProps) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error(error);
+  }, [error]);
+
+  return (
+    <div className="p-4 bg-red-50 rounded">
+      <h2 className="text-xl font-bold text-red-800">Something went wrong!</h2>
+      <p className="text-red-600 mt-2">{error.message}</p>
+      <button
+        onClick={reset}
+        className="mt-4 px-4 py-2 bg-red-600 text-white rounded"
+      >
+        Try again
+      </button>
+    </div>
+  );
+}
+```
+
+## Internationalization (i18n)
+
+```jsx
+// middleware.ts - Basic language detection and routing
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+ 
+export function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  
+  // Check if pathname is missing locale
+  const pathnameHasLocale = /^\/[a-z]{2}\//.test(pathname);
+  
+  if (!pathnameHasLocale) {
+    // Get locale from header or default to 'en'
+    const locale = request.headers.get('accept-language')?.split(',')[0].split('-')[0] || 'en';
+    
+    // Create new URL with locale
+    return NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url));
+  }
+}
+ 
+export const config = {
+  matcher: [
+    // Exclude files and images
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
+};
+```
+
+## Deployment & Optimization
+
+### Environment Variables
+
+```jsx
+// .env.local - Local development
+API_KEY=local_development_key
+
+// .env.production - Production environment
+API_KEY=production_key
+
+// Usage in code
+// Server-side (automatically loaded)
+const apiKey = process.env.API_KEY;
+
+// Client-side (must be prefixed with NEXT_PUBLIC_)
+const publicKey = process.env.NEXT_PUBLIC_API_KEY;
+```
+
+### Import Aliases
+
+```jsx
+// tsconfig.json or jsconfig.json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@lib/*": ["./src/lib/*"]
+    }
+  }
+}
+
+// Usage
+import Button from '@components/Button';
+import { fetchData } from '@lib/api';
+```
+
+### Next.js Config
+
+```jsx
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Strict mode for development
+  reactStrictMode: true,
+  
+  // Custom redirects
+  async redirects() {
+    return [
+      {
+        source: '/old-blog/:slug',
+        destination: '/blog/:slug',
+        permanent: true,
+      },
+    ];
+  },
+  
+  // Custom headers
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+        ],
+      },
+    ];
+  },
+  
+  // Image domains for next/image
+  images: {
+    domains: ['example.com', 'cdn.example.com'],
+    formats: ['image/avif', 'image/webp'],
+  },
+};
+
+export default nextConfig;
+```
+
+## Best Practices
+
+1. **Use Server Components by default** - Only use Client Components when you need client-side interactivity or hooks
+2. **Streaming for improved UX** - Leverage loading.tsx and streaming with Suspense for progressive loading
+3. **Optimize images** - Always use next/image to automatically optimize images
+4. **Keep API routes focused** - Build small, dedicated API functions instead of large monolithic handlers
+5. **Implement proper error boundaries** - Use error.tsx files strategically
+6. **Consider edge runtime** - Use the Edge Runtime for globally distributed, low-latency functions
+7. **Optimize bundle size** - Monitor and reduce client bundle size with tools like next/bundle-analyzer
+8. **Use TypeScript** - TypeScript provides better type safety and developer experience
+9. **Progressive Enhancement** - Start with server-rendered HTML, then enhance with JavaScript
+10. **Follow the DRY principle** - Extract reusable logic into utilities and custom hooks

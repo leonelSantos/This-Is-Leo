@@ -17,7 +17,6 @@ type BlogPost = {
 
 export default async function BlogPage() {
   // In a real implementation, this would come from your MDX files
-  // For now, we'll use dummy data that would match the structure of your real data
   const allPosts = await getAllContent('blog') as BlogPost[];
   
   // Group posts by category
@@ -98,46 +97,4 @@ export default async function BlogPage() {
       </div>
     </div>
   );
-}
-
-// This would be replaced with the actual implementation from your MDX utility
-async function getAllContent(directory: string): Promise<any[]> {
-  // This is a mock function that would be replaced by your actual implementation
-  return [
-    {
-      slug: '2025-04-tech-trends',
-      title: 'Tech Trends to Watch in 2025',
-      date: '2025-04-15',
-      description: 'An analysis of emerging technologies that will shape our future.',
-      category: 'Technology',
-    },
-    {
-      slug: '2025-03-economic-outlook',
-      title: 'Economic Outlook: Q2 2025',
-      date: '2025-03-28',
-      description: 'Breaking down current market trends and future predictions.',
-      category: 'Economy',
-    },
-    {
-      slug: '2025-03-software-architecture',
-      title: 'Modern Software Architecture Patterns',
-      date: '2025-03-15',
-      description: 'An overview of architecture patterns gaining popularity in 2025.',
-      category: 'Software',
-    },
-    {
-      slug: '2025-02-ai-ethics',
-      title: 'The Evolving Ethics of AI Systems',
-      date: '2025-02-22',
-      description: 'Examining the ethical considerations of advanced AI in everyday applications.',
-      category: 'Technology',
-    },
-    {
-      slug: '2025-01-quantum-computing',
-      title: 'Quantum Computing: Progress and Potential',
-      date: '2025-01-14',
-      description: 'A look at recent breakthroughs in quantum computing and their implications.',
-      category: 'Science',
-    },
-  ];
 }

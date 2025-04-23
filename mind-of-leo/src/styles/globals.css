@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* Base styles */
 :root {
@@ -62,23 +60,77 @@ p {
 /* Pre-defined utility classes */
 @layer components {
   .container-narrow {
-    @apply container max-w-4xl mx-auto px-4;
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   
   .link {
-    @apply text-blue-600 hover:text-blue-800 hover:underline font-medium;
+    color: rgb(37 99 235);
+    font-weight: 500;
+  }
+  
+  .link:hover {
+    color: rgb(30 64 175);
+    text-decoration: underline;
   }
   
   .tag {
-    @apply inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full font-medium;
+    display: inline-block;
+    background-color: rgb(243 244 246);
+    color: rgb(31 41 55);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    border-radius: 9999px;
+    font-weight: 500;
   }
   
   .card-hover {
-    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+  
+  .card-hover:hover {
+    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    transform: translateY(-0.25rem);
   }
   
   .prose-custom {
-    @apply prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg;
+    max-width: none;
+    font-size: 1.125rem;
+    line-height: 1.7777778;
+  }
+  
+  .prose-custom :where(h1, h2, h3, h4, h5, h6) {
+    font-weight: 700;
+    color: rgb(17 24 39);
+  }
+  
+  .prose-custom :where(p) {
+    color: rgb(55 65 81);
+  }
+  
+  .prose-custom :where(a) {
+    color: rgb(37 99 235);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .prose-custom :where(a:hover) {
+    text-decoration: underline;
+  }
+  
+  .prose-custom :where(img) {
+    border-radius: 0.5rem;
   }
 }
 
