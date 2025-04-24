@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getMDXBySlug } from '@/lib/mdx';
+import { getMDXBySlug as fetchMDXBySlug } from '@/lib/mdx';
 import Link from 'next/link';
 
 // In a real implementation, this would come from your file system or API
@@ -33,7 +33,7 @@ export default async function CheatsheetPage({ params }: { params: { technology:
   }
   
   // In a real implementation, you would fetch the content from your MDX files
-  const content = await getMDXBySlug('cheatsheets', technology);
+  const content = await fetchMDXBySlug('cheatsheets', technology);
   
   // For demonstration purposes, we'll just show what this would look like
   const sampleContent = {
@@ -111,18 +111,4 @@ export default async function CheatsheetPage({ params }: { params: { technology:
       </div>
     </div>
   );
-}
-
-// This is a mock function that in reality would fetch MDX content
-async function getMDXBySlug(directory: string, slug: string) {
-  // In a real implementation, this would read files from the file system
-  // or fetch from a CMS/API
-  return {
-    content: `# ${slug} Cheatsheet\n\nThis is where your MDX content would go.`,
-    frontmatter: {
-      title: `${slug.charAt(0).toUpperCase() + slug.slice(1)} Cheatsheet`,
-      description: `A comprehensive guide to ${slug}`,
-      date: new Date().toISOString(),
-    },
-  };
 }

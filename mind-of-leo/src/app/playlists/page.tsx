@@ -84,9 +84,9 @@ export default function PlaylistsPage() {
           <h2 className="text-2xl font-bold mb-6">{mood} Playlists</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {moodPlaylists.map((playlist) => (
-              <div key={playlist.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div key={playlist.id} className="bg-zinc-300 rounded-lg shadow-md overflow-hidden">
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{playlist.title}</h3>
+                  <h3 className=" text-black text-xl font-bold mb-2">{playlist.title}</h3>
                   <p className="text-gray-600 mb-4">{playlist.description}</p>
                 </div>
                 <SpotifyEmbed spotifyId={playlist.spotifyId} />
@@ -96,7 +96,7 @@ export default function PlaylistsPage() {
         </section>
       ))}
 
-      <div className="mt-16 bg-purple-50 p-8 rounded-lg">
+      <div className="mt-16 bg-zinc-700 p-8 rounded-lg">
         <h2 className="text-2xl font-bold mb-4">Have a playlist suggestion?</h2>
         <p className="mb-6">
           I'm always looking for new music! If you have a playlist you think I'd enjoy, feel free to share it.
