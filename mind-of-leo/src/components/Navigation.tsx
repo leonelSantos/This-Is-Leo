@@ -1,6 +1,7 @@
 "use client"
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 
@@ -28,8 +29,15 @@ export default function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="/" className="font-bold text-xl text-gray-800">
-              LAS
+            <Link href="/" className="flex items-center space-x-2">
+              <Image
+                src="/images/LAS-Pixelated.png"
+                alt="LAS Logo"
+                width={32}
+                height={32}
+                className="object-contain"
+              />
+              <span className="font-bold text-xl text-gray-800">LAS</span>
             </Link>
           </div>
 

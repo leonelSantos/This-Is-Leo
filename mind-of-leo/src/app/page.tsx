@@ -7,6 +7,9 @@ import CheatSheetCard from '@/components/CheatSheetCard';
 
 import { useRef, useEffect } from 'react';
 import styles from './page.module.css'
+import TextDisperse from '@/components/TextDisperse';
+import gsap from 'gsap';
+
 
 // In a real implementation, you would fetch these from your content directory or API
 const featuredPosts = [
@@ -42,6 +45,11 @@ const featuredCheatsheets = [
 ];
 
 export default function Home() {
+  const background = useRef(null);
+  const setBackground = (isActive) => {
+    gsap.to(background.current, {opacity: isActive ? 0.8 : 0})
+  }
+
   const container = useRef(null);
   const stickyMask = useRef(null);
 
@@ -69,8 +77,9 @@ export default function Home() {
 
 
   return (
+    
     <main className={styles.main}>
-      
+      {/* Text Clip Mask On Scroll */}
       <section>
         <div ref={container} className={styles.container}>
           <div ref={stickyMask} className={styles.stickyMask}>
@@ -80,25 +89,41 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* Hero Section */}
-      <section className="mb-16 text-center">
-        <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full mb-4">
-          <Image
-            src="/images/LAS-Pixelated.png"
-            alt="Profile Picture"
-            fill
-            className="object-cover"
-            priority
-          />
+
+      {/* Floating Letter */}
+      <section className='height-100vh flex justify-center items-center'>
+      <div className={styles.body}>
+        <TextDisperse setBackground={setBackground}>
+          <p>Leo <br></br> Santos</p>
+        </TextDisperse>
+
+        <TextDisperse setBackground={setBackground}>
+          <p>Design</p>
+          <p>&</p>
+          </TextDisperse>
+
+        <TextDisperse setBackground={setBackground}>
+          <p>Art</p>
+          <p>Direction</p>
+          </TextDisperse>
+
+        <TextDisperse setBackground={setBackground}>
+          <p>+447533063596</p>
+          </TextDisperse>
+
+        <TextDisperse setBackground={setBackground}>
+          <p>→Email</p>
+          </TextDisperse>
+
+        <TextDisperse setBackground={setBackground}>
+          <p>→Insta</p>
+          </TextDisperse>
         </div>
-        <h1 className="text-4xl font-bold mb-4">Observations From a Wandering Mind</h1>
-        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-          He who jumps into the void owes no explanation <br/>to those who stand and watch.
-        </p>
+        <div ref={background} className={styles.background}></div>
       </section>
 
       {/* Featured Blog Posts */}
-      <section className="mb-16">
+      <section className="mx-auto px-4 mb-16">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Latest Posts</h2>
           <Link href="/blog" className="text-cyan-200 hover:underline">
@@ -113,7 +138,7 @@ export default function Home() {
       </section>
 
       {/* Featured Cheatsheets */}
-      <section className="mb-16">
+      <section className="mx-auto px-4 mb-16">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Tech Cheatsheets</h2>
           <Link href="/cheatsheets" className="text-cyan-200 hover:underline">
@@ -128,7 +153,7 @@ export default function Home() {
       </section>
 
       {/* Quick Links */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <section className="mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-purple-50 p-6 rounded-lg">
           <h2 className="text-xl text-gray-800 font-bold mb-4">My Spotify Playlists</h2>
           <p className=" text-gray-800 mb-4">Check out my curated music collections for different moods and activities.</p>

@@ -3,7 +3,7 @@
 /* Base styles */
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
+  --background-rgb: 236, 229, 220;
   --primary-color: 37, 99, 235; /* blue-600 */
   --secondary-color: 249, 115, 22; /* orange-500 */
   --accent-color: 139, 92, 246; /* purple-500 */
@@ -13,7 +13,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-rgb: 30, 41, 59; /* slate-800 */
+    --background-rgb: 236, 229, 220; /* slate-800 */
   }
 }
 
@@ -55,6 +55,31 @@ h1, h2, h3, h4, h5, h6 {
 
 p {
   line-height: 1.6;
+}
+
+/* Text Disperse */
+.introLine{
+  display: flex;
+  font-size: 6vw;
+  justify-content: space-between;
+  text-transform: uppercase;
+}
+
+.introLine p{
+  margin: 0px;
+}
+
+.introLine:nth-of-type(5), .introLine:nth-of-type(6){
+  display: inline-flex;
+}
+
+.introLine:nth-of-type(6){
+  right: -40px;
+  position: relative;
+}
+
+.introLine p{
+  margin: 0px;
 }
 
 /* Pre-defined utility classes */
