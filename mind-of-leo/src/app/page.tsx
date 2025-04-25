@@ -94,17 +94,19 @@ export default function Home() {
       <section className='height-100vh flex justify-center items-center'>
       <div className={styles.body}>
         <TextDisperse setBackground={setBackground}>
-          <p>Leo <br></br> Santos</p>
+          <p>Leo Santos</p>
         </TextDisperse>
 
         <TextDisperse setBackground={setBackground}>
-          <p>Design</p>
-          <p>&</p>
+          <p>Designer</p>
           </TextDisperse>
 
         <TextDisperse setBackground={setBackground}>
-          <p>Art</p>
-          <p>Direction</p>
+          <p>&</p>
+          </TextDisperse>
+
+          <TextDisperse setBackground={setBackground}>
+          <p>Developer</p>
           </TextDisperse>
 
         <TextDisperse setBackground={setBackground}>
