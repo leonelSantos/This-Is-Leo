@@ -54,7 +54,7 @@ export default function Home() {
   const stickyMask = useRef(null);
 
   const initialMaskSize = .8;
-  const targetMaskSize = 30;
+  const targetMaskSize = 180;
   const easing = 0.15;
   let easedScrollProgress = 0;
 
@@ -90,6 +90,8 @@ export default function Home() {
         </div>
       </section>
 
+      <section></section>
+
       {/* Floating Letter */}
       <section className='height-100vh flex justify-center items-center'>
       <div className={styles.body}>
@@ -110,7 +112,7 @@ export default function Home() {
           </TextDisperse>
 
         <TextDisperse setBackground={setBackground}>
-          <p>+447533063596</p>
+          <p>786-657-1057</p>
           </TextDisperse>
 
         <TextDisperse setBackground={setBackground}>

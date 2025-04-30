@@ -48,13 +48,8 @@ export default function TextDipserse({ children, setBackground }) {
   };
 
   return (
-    <div 
-      style={{ cursor: "pointer" }} 
-      onMouseEnter={manageMouseEnter} 
-      onMouseLeave={manageMouseLeave} 
-      className='introLine'
-    >
-      {getChars(children)}
-    </div>
+    <div style={{cursor: "pointer"}} onMouseEnter={() => {manageMouseEnter()}} onMouseLeave={() => {manageMouseLeave(false)}} className='introLine'>
+      { getChars(children) }
+      </div>
   );
 }

@@ -68,21 +68,17 @@ export const transforms = [
   
   export const disperse = {
     open: (i) => ({
-      y: 0,
+      x: transforms[i].x + "em",
+      y: transforms[i].y + "em",
+      rotateZ: transforms[i].rotationZ,
+      transition: {duration: 0.75, ease: [0.33, 1, 0.68, 1]},
+      zIndex: 1
+    }),
+    closed: {
       x: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        delay: i * 0.05,
-      },
-    }),
-    closed: (i) => ({
-      y: Math.random() * 50 - 25,  // Random vertical displacement
-      x: Math.random() * 50 - 25,  // Random horizontal displacement
-      opacity: 0,
-      transition: {
-        duration: 0.5,
-        delay: i * 0.05,
-      },
-    }),
-  };
+      y: 0,
+      rotateZ: 0,
+      transition: {duration: 0.75, ease: [0.33, 1, 0.68, 1]},
+      zIndex: 0
+    }
+}
