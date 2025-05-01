@@ -95,7 +95,7 @@ export default function Home() {
       </section>
 
       {/* Floating Letter */}
-      <section className='height-150vh flex justify-center items-center pt-30 pb-30'>
+      <section className='height-100vh flex justify-center items-center pt-50 pb-40'>
       <div className={styles.body}>
 
         <div className='introLine'>

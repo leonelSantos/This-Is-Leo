@@ -60,7 +60,7 @@ p {
 /* Text Disperse */
 .introLine{
   display: flex;
-  font-size: 2vw;
+  font-size: 3vw;
   justify-content: space-between;
   text-transform: uppercase;
 }
