@@ -45,14 +45,18 @@ const featuredCheatsheets = [
 ];
 
 export default function Home() {
+  // This code is for the floating text effect
+  // It creates a text animation that reveals the background as you scroll down the page
   const background = useRef(null);
   const setBackground = (isActive) => {
     gsap.to(background.current, {opacity: isActive ? 0.8 : 0})
   }
 
+
+  // This code is for the text clip mask effect
+  // It creates a mask that reveals a video background as you scroll down the page
   const container = useRef(null);
   const stickyMask = useRef(null);
-
   const initialMaskSize = .8;
   const targetMaskSize = 180;
   const easing = 0.15;
@@ -84,44 +88,42 @@ export default function Home() {
         <div ref={container} className={styles.container}>
           <div ref={stickyMask} className={styles.stickyMask}>
             <video autoPlay muted loop>
-              <source src="/medias/nature.mp4" type="video/mp4"/>
+              <source src="/medias/ripple.mp4" type="video/mp4"/>
             </video>
           </div>
         </div>
       </section>
 
-      <section></section>
-
       {/* Floating Letter */}
-      <section className='height-100vh flex justify-center items-center'>
+      <section className='height-150vh flex justify-center items-center pt-30 pb-30'>
       <div className={styles.body}>
+
+        <div className='introLine'>
+          <p>Leonel</p>
+          <p>A.</p>
+          <p>Santos</p>
+        </div>
+
+        <div className='introLine'>
+          <p>Software</p>
+          <p>Developer</p>
+        </div>
+
         <TextDisperse setBackground={setBackground}>
-          <p>Leo Santos</p>
+          <p>→Blog Posts</p>
+        </TextDisperse>
+        <TextDisperse setBackground={setBackground}>
+          <p>→Cheat Sheets</p>
         </TextDisperse>
 
         <TextDisperse setBackground={setBackground}>
-          <p>Designer</p>
-          </TextDisperse>
+          <p>→Books</p>
+        </TextDisperse>
 
         <TextDisperse setBackground={setBackground}>
-          <p>&</p>
-          </TextDisperse>
-
-          <TextDisperse setBackground={setBackground}>
-          <p>Developer</p>
-          </TextDisperse>
-
-        <TextDisperse setBackground={setBackground}>
-          <p>786-657-1057</p>
-          </TextDisperse>
-
-        <TextDisperse setBackground={setBackground}>
-          <p>→Email</p>
-          </TextDisperse>
-
-        <TextDisperse setBackground={setBackground}>
-          <p>→Insta</p>
-          </TextDisperse>
+          <p>→Playlists</p>
+        </TextDisperse>
+        
         </div>
         <div ref={background} className={styles.background}></div>
       </section>
