@@ -10,11 +10,11 @@ export default function Navigation() {
   const pathname = usePathname();
 
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'Cheatsheets', path: '/cheatsheets' },
-    { name: 'Playlists', path: '/playlists' },
-    { name: 'Books', path: '/books' },
+    { name: 'HOME', path: '/' },
+    { name: 'BLOG', path: '/blog' },
+    { name: 'PLAYLISTS', path: '/playlists' },
+    { name: 'CHEAT SHEETS', path: '/cheatsheets' },
+    { name: 'BOOKS', path: '/books' },
   ];
 
   const isActive = (path: string) => {
@@ -28,17 +28,8 @@ export default function Navigation() {
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <Image
-                src="/images/LAS-Pixelated.png"
-                alt="LAS Logo"
-                width={32}
-                height={32}
-                className="object-contain"
-              />
-              <span className="font-bold text-xl text-gray-800">LAS</span>
-            </Link>
+          <div className="flex items-center"> 
+            <span className="las text-black text-9xl">LAS</span> 
           </div>
 
           {/* Desktop Navigation */}
@@ -48,9 +39,9 @@ export default function Navigation() {
                 <Link
                   key={item.path}
                   href={item.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  className={`modernFont px-3 py-2 rounded-md text-sm font-medium ${
                     isActive(item.path)
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-green-800 text-white'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >

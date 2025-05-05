@@ -1,0 +1,223 @@
+.main {
+    padding-bottom: 0vh; /* Extra space to allow scrolling*/
+    background-color: #f5f5f5;
+    width: 100%;
+    position: relative;
+  }
+  
+  .header {
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 0px;
+    
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    
+    p {
+      max-width: 600px;
+      line-height: 1.6;
+      color: #666;
+      font-size: 1.2rem;
+    }
+  }
+  
+  .cardContainer {
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0px;
+    
+    .card {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      top: -25%;
+      height: 500px;
+      width: 1000px;
+      border-radius: 25px;
+      padding: 50px;
+      transform-origin: top;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+      
+      &:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      }
+      
+      h2 {
+        text-align: center;
+        margin: 0px;
+        font-size: 28px;
+        font-weight: bold;
+      }
+      
+      .body {
+        display: flex;
+        height: 100%;
+        margin-top: 30px;
+        gap: 50px;
+        
+        .description {
+          width: 40%;
+          position: relative;
+          top: 10%;
+          
+          p {
+            font-size: 18px;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            
+            &::first-letter {
+              font-size: 28px;
+              font-weight: bold;
+            }
+          }
+          
+          .mood {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            
+            span {
+              background-color: rgba(0, 0, 0, 0.1);
+              padding: 8px 16px;
+              border-radius: 50px;
+              font-size: 14px;
+              font-weight: 500;
+            }
+          }
+        }
+        
+        .spotifyContainer {
+          position: relative;
+          width: 60%;
+          height: 100%;
+          border-radius: 25px;
+          overflow: hidden;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+          
+          .inner {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 25px;
+          }
+        }
+      }
+    }
+  }
+  
+  .footer {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+    background-color: #333;
+    color: white;
+    margin-top: 0vh;
+    
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      max-width: 600px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    
+    .button {
+      background-color: #9C27B0;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      
+      &:hover {
+        background-color: #7B1FA2;
+      }
+    }
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 1200px) {
+    .cardContainer .card {
+      width: 800px;
+      height: 450px;
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .cardContainer .card {
+      width: 90%;
+      height: auto;
+      padding: 30px;
+      
+      .body {
+        flex-direction: column;
+        
+        .description,
+        .spotifyContainer {
+          width: 100%;
+        }
+        
+        .spotifyContainer {
+          height: 250px;
+        }
+        
+        .description {
+          top: 0;
+          margin-bottom: 30px;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .header {
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      p {
+        font-size: 1rem;
+      }
+    }
+    
+    .cardContainer .card {
+      padding: 20px;
+      
+      h2 {
+        font-size: 24px;
+      }
+      
+      .body .description p {
+        font-size: 16px;
+        
+        &::first-letter {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+
+  .lastCard {
+    margin-bottom: 0vh; /* Negative margin to pull footer up*/
+    z-index: 1; /* Ensure it's above the footer*/
+  }

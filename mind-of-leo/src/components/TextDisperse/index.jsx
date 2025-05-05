@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { disperse } from './animation';
 
-export default function TextDipserse({ children, setBackground }) {
+export default function TextDisperse({ children, setBackground }) {
   const [isAnimated, setIsAnimated] = useState(false);
 
   const getChars = (text) => {
@@ -48,8 +48,16 @@ export default function TextDipserse({ children, setBackground }) {
   };
 
   return (
-    <div style={{cursor: "pointer"}} onMouseEnter={() => {manageMouseEnter()}} onMouseLeave={() => {manageMouseLeave(false)}} className='introLine'>
-      { getChars(children) }
-      </div>
+    <div 
+      style={{
+        cursor: "pointer",
+        position: "relative" // Add position relative to contain the effect
+      }} 
+      onMouseEnter={() => {manageMouseEnter()}} 
+      onMouseLeave={() => {manageMouseLeave(false)}} 
+      className='introLine'
+    >
+      {getChars(children)}
+    </div>
   );
 }

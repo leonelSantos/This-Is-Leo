@@ -1,23 +1,73 @@
-import { Metadata } from 'next';
+// src/app/blog/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getAllContent } from '@/lib/mdx';
-
-export const metadata: Metadata = {
-  title: 'Blog | YourName.dev',
-  description: 'Articles and opinions on technology, economy, software, science, and more.',
-};
-
+import StackedBlogPreview from '@/components/BlogComponents/StackedBlogPreview';
+import { motion } from 'framer-motion';
+ 
 type BlogPost = {
   slug: string;
   title: string;
   date: string;
   description: string;
   category: string;
+  excerpt?: string; // Added for previews
 };
 
-export default async function BlogPage() {
-  // In a real implementation, this would come from your MDX files
-  const allPosts = await getAllContent('blog') as BlogPost[];
+// Simulate the data fetching function since we're in a client component
+// In a real implementation, you'd merge this with your getAllContent function
+const getStaticData = async (): Promise<BlogPost[]> => {
+  // In a real implementation, this would come from your MDX files using getAllContent
+  // For demo purposes, we're using a static array
+  return [
+    {
+      slug: '2025-04-tech-trends',
+      title: 'Tech Trends to Watch in 2025',
+      date: 'April 15, 2025',
+      description: 'An analysis of emerging technologies that will shape our future',
+      category: 'Technology',
+      excerpt: 'As we navigate through 2025, several key technological trends are reshaping how we interact with digital systems and each other. This article explores the most significant developments that are likely to impact our lives in the coming months.'
+    },
+    {
+      slug: '2025-03-economic-outlook',
+      title: 'Economic Outlook: Q2 2025',
+      date: 'March 28, 2025',
+      description: 'Breaking down current market trends and future predictions',
+      category: 'Economy',
+      excerpt: 'The second quarter of 2025 presents a complex economic landscape with several competing factors influencing market directions. Here\'s my analysis of what to expect in the coming months.'
+    },
+    {
+      slug: 'state-of-ai-2025',
+      title: 'The State of AI in 2025',
+      date: 'February 10, 2025',
+      description: 'Examining the current landscape of artificial intelligence and machine learning',
+      category: 'Technology',
+      excerpt: 'Artificial intelligence continues to evolve at a breathtaking pace, with new capabilities and applications emerging almost daily. This article examines the current state of AI technology and where we\'re likely headed next.'
+    },
+    {
+      slug: 'future-of-work-remote',
+      title: 'The Future of Remote Work',
+      date: 'January 22, 2025',
+      description: 'How distributed teams are reshaping corporate culture',
+      category: 'Business',
+      excerpt: 'Five years after the global shift to remote work began, many organizations have completely reimagined how teams collaborate and deliver value. This article explores the lasting changes and emerging best practices for distributed workforces.'
+    }
+  ];
+};
+
+export default function BlogPage() {
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
+  
+  useEffect(() => {
+    // Fetch posts on component mount
+    const fetchPosts = async () => {
+      const posts = await getStaticData();
+      setAllPosts(posts);
+    };
+    
+    fetchPosts();
+  }, []);
   
   // Group posts by category
   const postsByCategory = allPosts.reduce((acc, post) => {
@@ -39,62 +89,10 @@ export default async function BlogPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <header className="mb-12 text-center">
-        <h1 className="text-3xl font-bold mb-4">Blog</h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          My thoughts and opinions on technology, economy, software, science, and more.
-        </p>
-      </header>
-
-      {Object.keys(postsByCategory).length === 0 ? (
-        <div className="text-center py-12">
-          <h2 className="text-2xl font-bold mb-4">No posts yet</h2>
-          <p className="text-gray-600">
-            Check back soon for new content!
-          </p>
-        </div>
-      ) : (
-        Object.entries(postsByCategory).map(([category, posts]) => (
-          <section key={category} className="mb-16">
-            <h2 className="text-2xl font-bold mb-6">{category}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {posts.map((post) => (
-                <article key={post.slug} className="bg-white rounded-lg shadow-md overflow-hidden">
-                  <div className="p-6">
-                    <div className="text-sm text-gray-500 mb-2">
-                      {post.date ? formatDate(post.date) : 'No date'} • {post.category}
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">
-                      <Link href={`/blog/${post.slug}`} className="hover:text-blue-600 transition-colors">
-                        {post.title}
-                      </Link>
-                    </h3>
-                    <p className="text-gray-700 mb-4">{post.description}</p>
-                    <Link href={`/blog/${post.slug}`} className="text-blue-600 hover:underline">
-                      Read more →
-                    </Link>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        ))
-      )}
-
-      <div className="mt-16 bg-blue-50 p-8 rounded-lg">
-        <h2 className="text-2xl font-bold mb-4">Looking for a specific topic?</h2>
-        <p className="mb-6">
-          If you're interested in a particular subject that I haven't covered yet,
-          feel free to suggest it. I'm always looking for new topics to explore.
-        </p>
-        <a
-          href="mailto:yourname@example.com?subject=Blog%20Topic%20Suggestion"
-          className="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-        >
-          Suggest a Topic
-        </a>
-      </div>
+    <div>
+      {/* Animated stacked blog cards section */}
+      {allPosts.length > 0 && <StackedBlogPreview posts={allPosts} />}
+      
     </div>
   );
 }

@@ -8,13 +8,10 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
-            <Link href="/" className="font-bold text-xl mb-4 block">
-              LAS.dev
+            <Link href="/" className="las text-white hover:text-black transition-colors text-9xl">
+              LAS
             </Link>
-            <p className="text-black mb-6 max-w-md">
-              A look into my mind.
-            </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 content-center">
             <a 
               href="https://www.instagram.com/leosantos.hi/" 
               target="_blank" 

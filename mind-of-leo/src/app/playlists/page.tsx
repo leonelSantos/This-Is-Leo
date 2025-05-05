@@ -1,10 +1,10 @@
-import { Metadata } from 'next';
-import SpotifyEmbed from '@/components/SpotifyEmbed';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'My Spotify Playlists | YourName.dev',
-  description: 'Collection of my favorite music playlists for different moods and activities.',
-};
+import { useRef, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import SpotifyEmbed from '@/components/PlaylistComponents/SpotifyEmbed';
+import Lenis from '@studio-freight/lenis';
+import styles from '@/components/PlaylistComponents/playlists.module.css';
 
 type Playlist = {
   id: string;
@@ -21,11 +21,6 @@ const playlists: Playlist[] = [
     description: 'Cowboy Shit',
     mood: 'Got \'em ol\' travelling blues',
     spotifyId: '6YgbHmQJzXsOHY9KYhoIV2',
-    //<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6YgbHmQJzXsOHY9KYhoIV2?utm_source=generator" 
-    // width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; 
-    // fullscreen; 
-    // picture-in-picture" 
-    // loading="lazy"></iframe>
   },
   {
     id: '2',
@@ -33,9 +28,6 @@ const playlists: Playlist[] = [
     description: 'Cowboy Shit II',
     mood: 'Got \'em ol\' travelling blues',
     spotifyId: '61EMKwEGqA3xyF4TCV6aUv',
-    //<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/61EMKwEGqA3xyF4TCV6aUv?utm_source=generator" 
-    // width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; 
-    // picture-in-picture" loading="lazy"></iframe>
   },
   {
     id: '3',
@@ -43,10 +35,6 @@ const playlists: Playlist[] = [
     description: 'Cowboy Shit III',
     mood: 'Got \'em ol\' travelling blues',
     spotifyId: '35r5XbMk4otx7QhUpEn1nw',
-    //<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/35r5XbMk4otx7QhUpEn1nw?utm_source=generator" 
-    // width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; 
-    // fullscreen; picture-in-picture" loading="lazy"></iframe>
-
   },
   {
     id: '4',
@@ -54,60 +42,118 @@ const playlists: Playlist[] = [
     description: 'Cowboy Shit IV',
     mood: 'Got \'em ol\' travelling blues',
     spotifyId: '6sfcz0bqE6GoBGxH0rTeSh',
-    //<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6sfcz0bqE6GoBGxH0rTeSh?utm_source=generator" 
-    // width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; 
-    // fullscreen; picture-in-picture" loading="lazy"></iframe>
   },
 ];
 
 export default function PlaylistsPage() {
-  // Group playlists by mood
-  const playlistsByMood = playlists.reduce((acc, playlist) => {
-    if (!acc[playlist.mood]) {
-      acc[playlist.mood] = [];
+  const container = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: container,
+    offset: ['start start', 'end end']
+  });
+
+  // Set up smooth scrolling with Lenis
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 0.1, // Adjust this value (lower = faster, higher = slower)
+      smoothWheel: true, // Enable smooth scrolling for mouse wheel
+      wheelMultiplier: 1.0, // Control wheel sensitivity
+    });
+  
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
     }
-    acc[playlist.mood].push(playlist);
-    return acc;
-  }, {} as Record<string, Playlist[]>);
+  
+    requestAnimationFrame(raf);
+  
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <header className="mb-12 text-center">
-        <h1 className="text-3xl font-bold mb-4">My Spotify Playlists</h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+    <main ref={container} className={styles.main}>
+      <div className={styles.header}>
+        <h1>My Spotify Playlists</h1>
+        <p>
           Music has always been an essential part of my life and work. Here are some of my carefully curated playlists for different moods and activities.
         </p>
-      </header>
-
-      {Object.entries(playlistsByMood).map(([mood, moodPlaylists]) => (
-        <section key={mood} className="mb-16">
-          <h2 className="text-2xl font-bold mb-6">{mood} Playlists</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {moodPlaylists.map((playlist) => (
-              <div key={playlist.id} className="bg-zinc-300 rounded-lg shadow-md overflow-hidden">
-                <div className="p-6">
-                  <h3 className=" text-black text-xl font-bold mb-2">{playlist.title}</h3>
-                  <p className="text-gray-600 mb-4">{playlist.description}</p>
-                </div>
-                <SpotifyEmbed spotifyId={playlist.spotifyId} />
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
-
-      <div className="mt-16 bg-zinc-700 p-8 rounded-lg">
-        <h2 className="text-2xl font-bold mb-4">Have a playlist suggestion?</h2>
-        <p className="mb-6">
-          I'm always looking for new music! If you have a playlist you think I'd enjoy, feel free to share it.
-        </p>
-        <a
-          href="mailto:yourname@example.com?subject=Playlist%20Suggestion"
-          className="inline-block bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700"
-        >
-          Send Suggestion
-        </a>
       </div>
-    </div>
+
+      {playlists.map((playlist, i) => {
+        // Calculate target scale for each card
+        // Each card will be slightly smaller than the one before it
+        const targetScale = 1 - ((playlists.length - i) * 0.05);
+        const isLast = i === playlists.length - 1;
+        
+        return (
+          <PlaylistCard 
+            key={playlist.id}
+            playlist={playlist}
+            i={i}
+            progress={scrollYProgress}
+            range={[i * 0.15, 0.85]}
+            targetScale={targetScale}
+            isLast={isLast}
+          />
+        );
+      })}
+
+    </main>
   );
 }
+
+const PlaylistCard = ({ playlist, i, progress, range, targetScale, isLast }: {
+  playlist: Playlist;
+  i: number;
+  progress: any;
+  range: number[];
+  targetScale: number;
+}) => {
+  const cardContainer = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: cardContainer,
+    offset: ['start end', 'start start']
+  });
+
+  // Transform values based on scroll position
+  const scale = useTransform(progress, range, [1, targetScale]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.2, 1]);
+  
+  // Generate a gradient background color based on index
+  const colors = ['#8c7b5e', '#bb6826', '#dfcbaf', '#943706'];
+  const color = colors[i % colors.length];
+
+  return (
+    <div ref={cardContainer} className={`${styles.cardContainer} ${isLast ? styles.lastCard : ''}`}>
+      <motion.div 
+        style={{ 
+          backgroundColor: color, 
+          scale,
+          top: `calc(-5vh + ${i * 25}px)`
+        }} 
+        className={styles.card}
+      >
+        <h2>{playlist.title}</h2>
+        <div className={styles.body}>
+          <div className={styles.description}>
+            <p>{playlist.description}</p>
+            <div className={styles.mood}>
+              <span>{playlist.mood}</span>
+            </div>
+          </div>
+
+          <div className={styles.spotifyContainer}>
+            <motion.div
+              className={styles.inner}
+              style={{ scale: imageScale }}
+            >
+              <SpotifyEmbed spotifyId={playlist.spotifyId} />
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};

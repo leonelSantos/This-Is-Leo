@@ -1,0 +1,99 @@
+.container {
+    position: relative;
+    height: 300vh;
+    width: 100%;
+    background-color: rgb(236, 229, 220); /* Match your site's background */
+  }
+  
+  .sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .cardWrapper {
+    position: relative;
+    width: 100%;
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card {
+    position: absolute;
+    width: 100%;
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+  }
+  
+  .activeCard {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
+  
+  .inactiveCard {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+  
+  .progressIndicator {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .indicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: rgb(209, 213, 219); /* gray-300 */
+    transition: background-color 0.3s ease;
+  }
+  
+  .activeIndicator {
+    background-color: rgb(37, 99, 235); /* blue-600 */
+  }
+  
+  .statusDot {
+    height: 0.75rem;
+    width: 0.75rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+  
+  .activeDot {
+    background-color: rgb(34, 197, 94); /* green-500 */
+  }
+  
+  .inactiveDot {
+    background-color: rgb(209, 213, 219); /* gray-300 */
+  }
+  
+  /* Content fade in/out animation */
+  .cardContent {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .activeContent {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* For perspective effect */
+  .perspective {
+    perspective: 1500px;
+  }
