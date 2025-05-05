@@ -1,10 +1,5 @@
 'use client'
 
-import Link from 'next/link';
-import Image from 'next/image';
-import BlogPostCard from '@/components/BlogPostCard';
-import CheatSheetCard from '@/components/CheatSheetCard';
-
 import { useRef, useEffect } from 'react';
 import styles from './page.module.css'
 import TextDisperse from '@/components/TextDisperse';

@@ -74,12 +74,6 @@ export default function PlaylistsPage() {
 
   return (
     <main ref={container} className={styles.main}>
-      <div className={styles.header}>
-        <h1>My Spotify Playlists</h1>
-        <p>
-          Music has always been an essential part of my life and work. Here are some of my carefully curated playlists for different moods and activities.
-        </p>
-      </div>
 
       {playlists.map((playlist, i) => {
         // Calculate target scale for each card

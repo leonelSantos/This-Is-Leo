@@ -3,7 +3,7 @@ import Image from 'next/image';
 import BookRecommendation from '@/components/BookRecommendation';
 
 export const metadata: Metadata = {
-  title: 'Book Recommendations | YourName.dev',
+  title: 'Book Recommendations | LAS.dev',
   description: 'A curated collection of books that have shaped my thinking on technology, economics, science, and more.',
 };
 
@@ -111,18 +111,6 @@ export default function BooksPage() {
         </section>
       ))}
 
-      <div className="mt-16 bg-amber-50 p-8 rounded-lg">
-        <h2 className="text-2xl font-bold mb-4">Have a book recommendation for me?</h2>
-        <p className="mb-6">
-          I'm always looking to expand my reading list. If you've read something great that you think I'd enjoy, I'd love to hear about it!
-        </p>
-        <a
-          href="mailto:yourname@example.com?subject=Book%20Recommendation"
-          className="inline-block bg-amber-600 text-white px-6 py-2 rounded hover:bg-amber-700"
-        >
-          Suggest a Book
-        </a>
-      </div>
     </div>
   );
 }
