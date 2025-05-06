@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import SpotifyEmbed from '@/components/PlaylistComponents/SpotifyEmbed';
 import Lenis from '@studio-freight/lenis';
 import styles from '@/components/PlaylistComponents/playlists.module.css';
+import PlaylistGradient from '@/components/PlaylistComponents/PlaylistGradient';
 
 type Playlist = {
   id: string;
@@ -55,9 +56,9 @@ export default function PlaylistsPage() {
   // Set up smooth scrolling with Lenis
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 0.1, // Adjust this value (lower = faster, higher = slower)
-      smoothWheel: true, // Enable smooth scrolling for mouse wheel
-      wheelMultiplier: 1.0, // Control wheel sensitivity
+      duration: 0.1,
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
     });
   
     function raf(time) {
@@ -73,37 +74,41 @@ export default function PlaylistsPage() {
   }, []);
 
   return (
-    <main ref={container} className={styles.main}>
-
-      {playlists.map((playlist, i) => {
-        // Calculate target scale for each card
-        // Each card will be slightly smaller than the one before it
-        const targetScale = 1 - ((playlists.length - i) * 0.05);
-        const isLast = i === playlists.length - 1;
-        
-        return (
-          <PlaylistCard 
-            key={playlist.id}
-            playlist={playlist}
-            i={i}
-            progress={scrollYProgress}
-            range={[i * 0.15, 0.85]}
-            targetScale={targetScale}
-            isLast={isLast}
-          />
-        );
-      })}
-
-    </main>
+    <>
+      {/* Include the simple gradient component */}
+      <PlaylistGradient />
+      
+      {/* Your existing playlist page structure unchanged */}
+      <main ref={container} className={styles.main}>
+        {playlists.map((playlist, i) => {
+          const targetScale = 1 - ((playlists.length - i) * 0.05);
+          const isLast = i === playlists.length - 1;
+          
+          return (
+            <PlaylistCard 
+              key={playlist.id}
+              playlist={playlist}
+              i={i}
+              progress={scrollYProgress}
+              range={[i * 0.15, 0.85]}
+              targetScale={targetScale}
+              isLast={isLast}
+            />
+          );
+        })}
+      </main>
+    </>
   );
 }
 
+// Keep your existing PlaylistCard component unchanged
 const PlaylistCard = ({ playlist, i, progress, range, targetScale, isLast }: {
   playlist: Playlist;
   i: number;
   progress: any;
   range: number[];
   targetScale: number;
+  isLast: boolean;
 }) => {
   const cardContainer = useRef(null);
   const { scrollYProgress } = useScroll({

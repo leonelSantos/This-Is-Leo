@@ -1,10 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import StackedBlogPreview from '@/components/BlogComponents/StackedBlogPreview';
-import { motion } from 'framer-motion';
- 
+import BlogGradient from '@/components/BlogComponents/BlogGradient';
+
 type BlogPost = {
   slug: string;
   title: string;
@@ -68,27 +67,14 @@ export default function BlogPage() {
     fetchPosts();
   }, []);
   
-  // Group posts by category
-  const postsByCategory = allPosts.reduce((acc, post) => {
-    if (!acc[post.category]) {
-      acc[post.category] = [];
-    }
-    acc[post.category].push(post);
-    return acc;
-  }, {} as Record<string, BlogPost[]>);
-
-  // Format date for display
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
 
   return (
     <div>
+      <BlogGradient
+        intensity={0.6}
+        blur={150}
+        speed={0.7}
+        opacity={0.65}/>
       {/* Animated stacked blog cards section */}
       {allPosts.length > 0 && <StackedBlogPreview posts={allPosts} />}
       
