@@ -8,17 +8,17 @@ import gsap from 'gsap';
 export default function Home() {
   // This code is for the floating text effect
   // It creates a text animation that reveals the background as you scroll down the page
-  const background = useRef(null);
-  const textSection = useRef(null);
+  const background = useRef<HTMLDivElement>(null);
+  const textSection = useRef<HTMLElement>(null);
   
-  const setBackground = (isActive) => {
+  const setBackground = (isActive: boolean) => {
     gsap.to(background.current, {opacity: isActive ? 0.8 : 0})
   }
 
   // This code is for the text clip mask effect
   // It creates a mask that reveals a video background as you scroll down the page
-  const container = useRef(null);
-  const stickyMask = useRef(null);
+  const container = useRef<HTMLDivElement>(null);
+  const stickyMask = useRef<HTMLDivElement>(null);
   const initialMaskSize = .8;
   const targetMaskSize = 180;
   const easing = 0.15;
