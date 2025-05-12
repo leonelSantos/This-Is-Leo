@@ -1,12 +1,22 @@
-import { Metadata } from 'next';
-import Image from 'next/image';
+'use client';
+
+import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+
+// Import the BookImageAnimation component with dynamic loading
+// This prevents hydration errors for the client-side animation
+const BookImageAnimation = dynamic(
+  () => import('@/components/RepeatingImageAnimation/BookImageAnimation'),
+  { ssr: false }
+);
+
+// Import the BookGradient component
+import BookGradient from '@/components/RepeatingImageAnimation/BookGradient';
+
+// Import the regular BookRecommendation for fallback
 import BookRecommendation from '@/components/BookRecommendation';
 
-export const metadata: Metadata = {
-  title: 'Book Recommendations | LAS.dev',
-  description: 'A curated collection of books that have shaped my thinking on technology, economics, science, and more.',
-};
-
+// Types
 type Book = {
   id: string;
   title: string;
@@ -18,13 +28,14 @@ type Book = {
   amazonLink?: string;
 };
 
+// Books data remains the same as your original page
 const books: Book[] = [
   {
     id: '1',
     title: 'The Pragmatic Programmer',
     author: 'David Thomas, Andrew Hunt',
     description: 'A classic that helped me establish good programming practices and mindset. Contains timeless advice for software developers at any level.',
-    coverImage: '/images/books/pragmatic-programmer.jpg',
+    coverImage: '/images/books/Active-Inference.jpg',
     category: 'Technology',
     rating: 5,
     amazonLink: 'https://www.amazon.com/Pragmatic-Programmer-journey-mastery-Anniversary/dp/0135957052/',
@@ -34,7 +45,7 @@ const books: Book[] = [
     title: 'Thinking, Fast and Slow',
     author: 'Daniel Kahneman',
     description: 'This book transformed my understanding of how we think and make decisions. Kahneman explains the two systems that drive our thinking and how they shape our judgments.',
-    coverImage: '/images/books/thinking-fast-slow.jpg',
+    coverImage: '/images/books/Big-Sur.jpg',
     category: 'Psychology',
     rating: 5,
     amazonLink: 'https://www.amazon.com/Thinking-Fast-Slow-Daniel-Kahneman/dp/0374533555/',
@@ -44,7 +55,7 @@ const books: Book[] = [
     title: 'Why We Sleep',
     author: 'Matthew Walker',
     description: 'A fascinating exploration of sleep and its critical importance to our physical and mental health. Changed how I approach rest and productivity.',
-    coverImage: '/images/books/why-we-sleep.jpg',
+    coverImage: '/images/books/Brave-New-World.jpg',
     category: 'Science',
     rating: 4,
     amazonLink: 'https://www.amazon.com/Why-We-Sleep-Unlocking-Dreams/dp/1501144316/',
@@ -54,7 +65,7 @@ const books: Book[] = [
     title: 'The Psychology of Money',
     author: 'Morgan Housel',
     description: 'An insightful look at how our background, experiences, and emotions shape our relationship with money. Contains timeless lessons on wealth and happiness.',
-    coverImage: '/images/books/psychology-of-money.jpg',
+    coverImage: '/images/books/Breath.jpg',
     category: 'Finance',
     rating: 5,
     amazonLink: 'https://www.amazon.com/Psychology-Money-Timeless-lessons-happiness/dp/0857197681/',
@@ -64,7 +75,7 @@ const books: Book[] = [
     title: 'Atomic Habits',
     author: 'James Clear',
     description: 'A practical guide to building good habits and breaking bad ones. The concepts in this book have helped me improve my productivity and consistency.',
-    coverImage: '/images/books/atomic-habits.jpg',
+    coverImage: '/images/books/Chaos.jpg',
     category: 'Productivity',
     rating: 4,
     amazonLink: 'https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299/',
@@ -74,14 +85,14 @@ const books: Book[] = [
     title: 'Designing Data-Intensive Applications',
     author: 'Martin Kleppmann',
     description: 'An excellent deep dive into the principles of designing systems that handle data at scale. Essential reading for any software engineer working with data systems.',
-    coverImage: '/images/books/data-intensive-apps.jpg',
+    coverImage: '/images/books/Chip-War.jpg',
     category: 'Technology',
     rating: 5,
     amazonLink: 'https://www.amazon.com/Designing-Data-Intensive-Applications-Reliable-Maintainable/dp/1449373321/',
   },
 ];
 
-// Group books by category
+// Group books by category for the traditional view
 const booksByCategory: Record<string, Book[]> = books.reduce((acc, book) => {
   if (!acc[book.category]) {
     acc[book.category] = [];
@@ -91,26 +102,54 @@ const booksByCategory: Record<string, Book[]> = books.reduce((acc, book) => {
 }, {} as Record<string, Book[]>);
 
 export default function BooksPage() {
+  // State to track which view to display
+  const [viewMode, setViewMode] = useState<'animation' | 'traditional'>('animation');
+  
+  // Check if the window is available (client-side)
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Toggle between view modes
+  const toggleView = () => {
+    setViewMode(prev => prev === 'animation' ? 'traditional' : 'animation');
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <header className="mb-12 text-center">
-        <h1 className="text-3xl font-bold mb-4">Book Recommendations</h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Books that have influenced my thinking across various domains. I hope you find them as valuable as I did.
-        </p>
-      </header>
+    <>
+      {/* Add the BookGradient component */}
+      <BookGradient />
+      
+      <div className="container mx-auto px-4 pb-16">
 
-      {Object.entries(booksByCategory).map(([category, categoryBooks]) => (
-        <section key={category} className="mb-16">
-          <h2 className="text-2xl font-bold mb-6">{category}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categoryBooks.map((book) => (
-              <BookRecommendation key={book.id} book={book} />
-            ))}
-          </div>
-        </section>
-      ))}
-
+      {/* Conditional rendering based on view mode */}
+      {isMounted && (
+        <>
+          {viewMode === 'animation' ? (
+            // Animated grid view
+            <div className="my-8">
+              <BookImageAnimation books={books} />
+            </div>
+          ) : (
+            // Traditional view (original implementation)
+            <>
+              {Object.entries(booksByCategory).map(([category, categoryBooks]) => (
+                <section key={category} className="mb-16">
+                  <h2 className="text-2xl font-bold mb-6">{category}</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {categoryBooks.map((book) => (
+                      <BookRecommendation key={book.id} book={book} />
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </>
+          )}
+        </>
+      )}
     </div>
+    </>
   );
 }
