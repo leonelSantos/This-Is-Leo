@@ -199,7 +199,7 @@ const BookImageAnimation: React.FC<BookImageAnimationProps> = ({ books }) => {
         .timeline({ delay })
         .fromTo(
           mover,
-          { opacity: 0.4, clipPath: 'inset(100% 0% 0% 0%)' },
+          { opacity: 1, clipPath: 'inset(100% 0% 0% 0%)' },
           {
             opacity: 1,
             clipPath: 'inset(0% 0% 0% 0%)',
@@ -553,7 +553,7 @@ const BookImageAnimation: React.FC<BookImageAnimationProps> = ({ books }) => {
           position: fixed;
           margin: 0;
           width: 100%;
-          height: 100vh;
+          height: 100%;
           padding: 1.5rem;
           top: 0;
           left: 0;
@@ -567,7 +567,6 @@ const BookImageAnimation: React.FC<BookImageAnimationProps> = ({ books }) => {
           grid-template-rows: 1fr min-content;
           grid-template-columns: 100%;
           grid-template-areas: 'panel-image' 'panel-content';
-          background-color: rgba(255, 255, 255, 0.97);
         }
         
         @media screen and (min-width: 768px) {

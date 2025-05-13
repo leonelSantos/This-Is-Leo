@@ -24,7 +24,8 @@ const BookGradient: React.FC<BookGradientProps> = ({
   const secondaryGradientRef = useRef<HTMLDivElement>(null);
   
   // Warm color palette - browns, oranges, ambers for books
-  const colors = ['#bb6826', '#8c7b5e', '#dfcbaf', '#943706'];
+  const colors = ['#b76df1', '#6de0f1', '#b6f16d', '#f16dc9'];
+
   
   // Set up mouse tracking for gradient
   useEffect(() => {

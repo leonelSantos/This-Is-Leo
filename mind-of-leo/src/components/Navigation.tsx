@@ -13,8 +13,8 @@ export default function Navigation() {
     { name: 'HOME', path: '/' },
     { name: 'BLOG', path: '/blog' },
     { name: 'PLAYLISTS', path: '/playlists' },
-    { name: 'CHEAT SHEETS', path: '/cheatsheets' },
     { name: 'BOOKS', path: '/books' },
+    { name: 'CHEAT SHEETS', path: '/cheatsheets' },
   ];
 
   const isActive = (path: string) => {
