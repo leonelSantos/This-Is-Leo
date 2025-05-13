@@ -21,8 +21,8 @@ import BookRecommendation from '@/components/BookRecommendation';
 type Book = {
   id: string;
   title: string;
-  author: string;
-  description: string;
+  author: string | string[];
+  description: string | string[];
   coverImage: string;
   category: string;
   rating: number;

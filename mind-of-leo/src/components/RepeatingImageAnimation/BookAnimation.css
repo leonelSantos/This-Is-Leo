@@ -1,0 +1,338 @@
+/* Book Animation Styles 
+--------------------- 
+This stylesheet contains all the styling needed for the book collection
+animation with expanding panels and transitioning elements.
+*/
+
+/* Loading spinner and container */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  width: 100%;
+}
+
+.loading-bar {
+  width: 50%;
+  max-width: 300px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #bb6826, transparent); /* Sliding gradient for visual interest */
+  background-size: 200% 100%;
+  animation: loading 2s infinite;
+  margin-bottom: 1rem;
+  border-radius: 3px;
+}
+
+/* Animation for the loading bar - sliding gradient effect */
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Main container frame and heading */
+.frame {
+  padding: 1.5rem;
+  font-size: 18px;
+  font-weight: 500;
+  display: grid;
+  z-index: 1000;
+  width: 100%;
+  position: relative;
+  pointer-events: auto;
+}
+
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 5rem 0 1rem;
+}
+
+.heading__title {
+  font-weight: 700;
+  font-size: clamp(2rem, 10vw, 6rem); /* Responsive font size */
+  margin: 0;
+  line-height: 0.9;
+}
+
+.heading__meta {
+  font-size: 1.1rem;
+}
+
+/* Decorative dot after the meta text */
+.heading__meta::after {
+  content: '·';
+  font-family: serif;
+  font-size: 3.5rem;
+  line-height: 0.2;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+  display: inline-flex;
+}
+
+/* Grid layout for book items */
+.grid {
+  padding: 1rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Responsive grid */
+  gap: 2rem;
+  margin-bottom: 5rem;
+}
+
+/* Individual book grid item */
+.grid__item {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  cursor: pointer;
+  will-change: transform, clip-path; /* Optimize for animation performance */
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1), 
+              box-shadow 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* Hover effect - lift items up slightly */
+.grid__item:hover {
+  transform: translateY(-5px);
+}
+
+/* Hover effect - slightly dim the image */
+.grid__item:hover .grid__item-image {
+  opacity: 0.9;
+}
+
+/* Book cover image container */
+.grid__item-image {
+  width: 100%;
+  aspect-ratio: 4/5; /* Standard book cover ratio */
+  background-size: cover;
+  background-position: 50% 50%;
+  border-radius: 8px;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Category tag in the top-right corner of book covers */
+.category-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Book title in the caption */
+.grid__item-caption h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0.5rem 0 0 0;
+  text-align: left;
+}
+
+/* Text content in the caption */
+.grid__item-caption p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0.25rem 0;
+  color: #666;
+}
+
+/* Hide the full description in the grid view */
+.grid__item-caption p:last-of-type {
+  display: none; /* Only show in expanded panel */
+}
+
+/* Expanded panel that appears when a book is clicked */
+.panel {
+  position: fixed;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  top: 0;
+  left: 0;
+  display: grid;
+  gap: 1rem;
+  opacity: 0; /* Initially hidden */
+  pointer-events: none; /* Initially non-interactive */
+  z-index: 2000;
+  will-change: transform, clip-path; /* Optimize for animation performance */
+  justify-content: center;
+  grid-template-rows: 1fr min-content; /* Default for mobile */
+  grid-template-columns: 100%;
+  grid-template-areas: 'panel-image' 'panel-content'; /* Image above, content below */
+}
+
+/* Responsive layout for larger screens */
+@media screen and (min-width: 768px) {
+  .panel {
+    grid-template-columns: calc((100vh - 3rem) * 4 / 5 - 1rem) 1fr; /* Book cover and content side by side */
+    grid-template-areas: 'panel-image panel-content';
+    grid-template-rows: 100%;
+  }
+  
+  /* Alternative layout with content on the left */
+  .panel--right {
+    grid-template-columns: 1fr calc((100vh - 3rem) * 4 / 5 - 1rem);
+    grid-template-areas: 'panel-content panel-image';
+  }
+}
+
+/* Book cover image in the expanded panel */
+.panel__img {
+  grid-area: panel-image;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4/5; /* Standard book cover ratio */
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Adjust image dimensions on larger screens */
+@media screen and (min-width: 768px) {
+  .panel__img {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+  }
+}
+
+/* Text content in the expanded panel */
+.panel__content {
+  grid-area: panel-content;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  padding: 1rem;
+}
+
+/* Book title in the expanded panel */
+.panel__content h3 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Text content in the expanded panel */
+.panel__content p {
+  margin: 0.5rem 0;
+  max-width: 30rem;
+  line-height: 1.6;
+  color: #555;
+  font-size: 1.1rem;
+}
+
+/* Category tag in the expanded panel */
+.panel-category {
+  background-color: #f3f4f6;
+  color: #333;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 20px;
+}
+
+/* Amazon button link */
+.panel__button {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #bb6826; /* Warm amber color */
+  color: white;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+/* Amazon button hover effect */
+.panel__button:hover {
+  background-color: #943706; /* Darker shade on hover */
+}
+
+/* Close button to return to grid view */
+.panel__close {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 2rem 0 0;
+  font: inherit;
+  cursor: pointer;
+  color: #bb6826;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+/* Close button hover effect */
+.panel__close:hover {
+  text-decoration: underline;
+}
+
+/* Animation elements that move between thumbnail and panel */
+.mover {
+  position: fixed;
+  aspect-ratio: 4/5; /* Match book cover ratio */
+  background-size: cover;
+  background-position: 50% 50%;
+  will-change: transform, clip-path; /* Optimize for animation performance */
+  pointer-events: none; /* Never interactive */
+  border-radius: 8px;
+}
+
+/* Animation for revealing panel content */
+@keyframes panelReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Container for temporary animation elements */
+.movers-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Never blocks interaction */
+  z-index: 1500;
+}
+
+/* Responsive adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on tablets */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr; /* Single column on phones */
+  }
+  
+  .heading__title {
+    font-size: 2.5rem; /* Smaller heading on mobile */
+  }
+}
