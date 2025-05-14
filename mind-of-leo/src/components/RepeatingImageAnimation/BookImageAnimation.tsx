@@ -36,6 +36,7 @@ const BookImageAnimation: React.FC<BookImageAnimationProps> = ({ books }) => {
   const panelContentRef = useRef<HTMLDivElement>(null); // Currently selected book
   const panelImgRef = useRef<HTMLDivElement>(null); // Panel position based on click location
   const frameRef = useRef<HTMLDivElement>(null); // Initial loading state for images
+  const contentWrapperRef = useRef<HTMLDivElement>(null); // Wrapper for scrollable content
 
   // Component state
   const [isPanelOpen, setIsPanelOpen] = useState(false); // Whether a book panel is open
@@ -98,6 +99,13 @@ const BookImageAnimation: React.FC<BookImageAnimationProps> = ({ books }) => {
       gsap.killTweensOf('*');
     };
   }, []);
+
+  // Add an effect to scroll to top when panel is opened
+  useEffect(() => {
+    if (isPanelOpen && panelContentRef.current) {
+      panelContentRef.current.scrollTop = 0;
+    }
+  }, [isPanelOpen]);
 
   /**
    * Calculates the center coordinates of an HTML element
@@ -443,11 +451,11 @@ const BookImageAnimation: React.FC<BookImageAnimationProps> = ({ books }) => {
                 clipPath: 'inset(100% 0% 0% 0%)' // Initially clipped (for animation)
               }}
             />
-            {/* Book details panel content */}
+            {/* Book details panel content - Now scrollable */}
             <figcaption ref={panelContentRef} className="panel__content">
               {/* Conditional rendering based on selected book */}
               {currentBook && (
-                <>
+                <div ref={contentWrapperRef} className="panel__content-wrapper">
                   <h3>{currentBook.title}</h3>
                   <p>By {currentBook.author}</p>
                   {/* Rating and category display */}
@@ -472,11 +480,14 @@ const BookImageAnimation: React.FC<BookImageAnimationProps> = ({ books }) => {
                       View on Amazon
                     </a>
                   )}
-                  {/* Close button to return to grid view */}
-                  <button onClick={resetView} className="panel__close">
-                    close
-                  </button>
-                </>
+                  
+                  {/* Close button container with gradient background */}
+                  <div className="panel__close-container">
+                    <button onClick={resetView} className="panel__close">
+                      Close
+                    </button>
+                  </div>
+                </div>
               )}
             </figcaption>
           </figure>

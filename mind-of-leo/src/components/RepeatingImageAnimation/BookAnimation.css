@@ -110,7 +110,7 @@ animation with expanding panels and transitioning elements.
 /* Book cover image container */
 .grid__item-image {
   width: 100%;
-  aspect-ratio: 4/5; /* Standard book cover ratio */
+  aspect-ratio: 3/5; /* Standard book cover ratio */
   background-size: cover;
   background-position: 50% 50%;
   border-radius: 8px;
@@ -217,10 +217,23 @@ animation with expanding panels and transitioning elements.
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   text-align: left;
   padding: 1rem;
+  overflow-y: auto; /* Add scrolling when content overflows */
+  max-height: 100%; /* Limit height to prevent overflow beyond container */
+  position: relative; /* For positioning sticky elements */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Ensure content wrapper takes appropriate space */
+.panel__content-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 60px; /* Space for fixed close button */
 }
 
 /* Book title in the expanded panel */
@@ -237,7 +250,7 @@ animation with expanding panels and transitioning elements.
   max-width: 30rem;
   line-height: 1.6;
   color: #555;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 /* Category tag in the expanded panel */
@@ -253,6 +266,7 @@ animation with expanding panels and transitioning elements.
 /* Amazon button link */
 .panel__button {
   display: inline-block;
+  width: min-content;
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
   background-color: #bb6826; /* Warm amber color */
@@ -268,12 +282,24 @@ animation with expanding panels and transitioning elements.
   background-color: #943706; /* Darker shade on hover */
 }
 
+/* Close button container - fixed at bottom */
+.panel__close-container {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: min-content;
+  padding: 20px 0 0;
+  margin-top: auto;
+  text-align: left;
+  z-index: 10;
+}
+
 /* Close button to return to grid view */
 .panel__close {
   background: none;
   border: 0;
-  padding: 0;
-  margin: 2rem 0 0;
+  padding: 10px 0;
+  margin: 0;
   font: inherit;
   cursor: pointer;
   color: #bb6826;
@@ -284,6 +310,26 @@ animation with expanding panels and transitioning elements.
 /* Close button hover effect */
 .panel__close:hover {
   text-decoration: underline;
+}
+
+/* Mobile-specific adjustments */
+@media screen and (max-width: 767px) {
+  .panel {
+    padding: 1rem;
+  }
+  
+  .panel__img {
+    max-height: 50vh;
+    width: 100%;
+  }
+  
+  .panel__content {
+    padding: 0.5rem;
+  }
+  
+  .panel__content h3 {
+    font-size: 1.5rem;
+  }
 }
 
 /* Animation elements that move between thumbnail and panel */
